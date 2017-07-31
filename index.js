@@ -28,6 +28,7 @@ app.get('/', function(req, res){
    }
    res.send("Wrong Token!!!")
  })
+ /*
  app.post('/erbhook/', function(req, res){
    let messaging_events = req.body.entry[0].messaging_events
    for (;et i =0;i<messaging_events.length;i++){
@@ -60,7 +61,7 @@ app.get('/', function(req, res){
      }
    })
  }
-
+*/
 app.listen(app.get('port'), function(){
   console.log("running: port")
 })
