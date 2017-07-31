@@ -22,13 +22,13 @@ app.get('/', function(req, res){
 
  //Facebook
 
- app.get('/webhook/', function(req, res)){
+ app.get('/webhook/', function(req, res){
    if(req.query['hub.verify_token'] === "blondiebytes"){
      res.send(req.query['hub.challenge'])
    }
    res.send("Wrong Token!!!")
- }
- app.post('/erbhook/', function(req, res)){
+ })
+ app.post('/erbhook/', function(req, res){
    let messaging_events = req.body.entry[0].messaging_events
    for (;et i =0;i<messaging_events.length;i++){
      ler event = messaging_events[i]
@@ -39,7 +39,7 @@ app.get('/', function(req, res){
      }
    }
    res.sendStatus(200)
- }
+ })
 
 
  function sendText(sender, text){
