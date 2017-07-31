@@ -1,4 +1,4 @@
-/*var express = require("express");
+var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 
@@ -27,7 +27,7 @@ app.get("/webhook", function (req, res) {
 // All callbacks for Messenger will be POST-ed here
 app.post("/webhook", function (req, res) {
   // Make sure this is a page subscription
-  if (req.body.object == "page") {
+  if (event.message && event.message.text) {
     // Iterate over each entry
     // There may be multiple entries if batched
     req.body.entry.forEach(function(entry) {
@@ -95,4 +95,4 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
-}*/
+}
