@@ -53,7 +53,7 @@ function processPostback(event) {
     request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
-        access_token: process.env.PAGE_ACCESS_TOKEN,
+        access_token: "EAAaEFbZBT8Q4BANNADAOZBrUZA2qs0dIRONWB5utihx2r6NtMwZAnQdZCnXaQOC9uCNiZBQpDu2RDSKZAL2iSZBzZAbMYuvbxNuaCp00RCjKJ5FEZAUN6DogSW6CdUESByXhtIraiGc1T4bvsZC5gOFjRAAOpSY5ZAAxqMK48vuVu0kORwZDZD",
         fields: "first_name"
       },
       method: "GET"
@@ -76,13 +76,14 @@ function processPostback(event) {
 function sendMessage(recipientId, message) {
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    qs: {access_token: "EAAaEFbZBT8Q4BANNADAOZBrUZA2qs0dIRONWB5utihx2r6NtMwZAnQdZCnXaQOC9uCNiZBQpDu2RDSKZAL2iSZBzZAbMYuvbxNuaCp00RCjKJ5FEZAUN6DogSW6CdUESByXhtIraiGc1T4bvsZC5gOFjRAAOpSY5ZAAxqMK48vuVu0kORwZDZD"},
     method: "POST",
     json: {
       recipient: {id: recipientId},
       message: message,
     }
   }, function(error, response, body) {
+    console.log('success', body)
     if (error) {
       console.log("Error sending message: " + response.error);
     }
