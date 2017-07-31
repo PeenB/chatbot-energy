@@ -85,7 +85,9 @@ function sendMessage(recipientId, message) {
     method: "POST",
     json: {
       recipient: {id: recipientId},
-      message: "testtest",
+      message: {
+          text: "testtest"
+      },
     }
   }, function(error, response, body) {
     console.log('success', body)
