@@ -34,7 +34,7 @@ const request = require('request');
 
 function sendMessage(event) {
   let sender = event.sender.id;
-  let text = event.message.text;
+  let text = "Hi";
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
