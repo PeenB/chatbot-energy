@@ -1,4 +1,4 @@
-/*var express = require("express");
+var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 
@@ -25,6 +25,7 @@ app.get("/webhook", function (req, res) {
 });
 
 // All callbacks for Messenger will be POST-ed here
+// All callbacks for Messenger will be POST-ed here
 app.post("/webhook", function (req, res) {
   // Make sure this is a page subscription
   if (req.body.object == "page") {
@@ -33,11 +34,7 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
-
-        var senderId = event.sender.id;
-        sendMessage(senderId, "test")
         if (event.postback) {
-          console.log('postback')
           processPostback(event);
         }
       });
@@ -57,7 +54,7 @@ function processPostback(event) {
     request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
-        access_token: "EAAaEFbZBT8Q4BANNADAOZBrUZA2qs0dIRONWB5utihx2r6NtMwZAnQdZCnXaQOC9uCNiZBQpDu2RDSKZAL2iSZBzZAbMYuvbxNuaCp00RCjKJ5FEZAUN6DogSW6CdUESByXhtIraiGc1T4bvsZC5gOFjRAAOpSY5ZAAxqMK48vuVu0kORwZDZD",
+        access_token: process.env.EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD,
         fields: "first_name"
       },
       method: "GET"
@@ -70,7 +67,7 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "My name is Chat Bot. I can tell you various details. What movie would you like to know about?";
+      var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
       sendMessage(senderId, {text: message});
     });
   }
@@ -81,8 +78,7 @@ function sendMessage(recipientId, message) {
   console.log('sendmsg')
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: "EAAaEFbZBT8Q4BANNADAOZBrUZA2qs0dIRONWB5utihx2r6NtMwZAnQdZCnXaQOC9uCNiZBQpDu2RDSKZAL2iSZBzZAbMYuvbxNuaCp00RCjKJ5FEZAUN6DogSW6CdUESByXhtIraiGc1T4bvsZC5gOFjRAAOpSY5ZAAxqMK48vuVu0kORwZDZD"},
-    method: "POST",
+    qs: {access_token: process.env.EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD},    method: "POST",
     json: {
       recipient: {id: recipientId},
       message: {
@@ -95,4 +91,4 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
-}*/
+}
