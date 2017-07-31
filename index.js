@@ -1,4 +1,4 @@
-var express = require("express");
+/*var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 
@@ -95,4 +95,4 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
-}
+}*/
