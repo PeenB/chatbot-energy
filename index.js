@@ -33,7 +33,11 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
+
+        var senderId = event.sender.id;
+        sendMessage(senderId, "test")
         if (event.postback) {
+          console.log('postback')
           processPostback(event);
         }
       });
@@ -74,6 +78,7 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
+  console.log('sendmsg')
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: "EAAaEFbZBT8Q4BANNADAOZBrUZA2qs0dIRONWB5utihx2r6NtMwZAnQdZCnXaQOC9uCNiZBQpDu2RDSKZAL2iSZBzZAbMYuvbxNuaCp00RCjKJ5FEZAUN6DogSW6CdUESByXhtIraiGc1T4bvsZC5gOFjRAAOpSY5ZAAxqMK48vuVu0kORwZDZD"},
