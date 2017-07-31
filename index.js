@@ -34,7 +34,7 @@ const request = require('request');
 
 function sendMessage(event) {
   let sender = event.sender.id;
-  let text = "Hi";
+  let text = "Hi, I'am a chatbot. Anything I can help you with?";
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
