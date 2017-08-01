@@ -3,6 +3,22 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+//Time
+var time = require('time');
+// Create a new Date instance, representing the current instant in time
+var now = new time.Date();
+
+// now.setTimezone("Thailand/BKK");
+// `.getDate()`, `.getDay()`, `.getHours()`, etc.
+// will return values according to UTC-8
+// Default behavior:
+console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
+
+console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toTimeString());
+//console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toLocaleTimeString());
+
+
+
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
@@ -16,13 +32,15 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+
+
 /* Handling all messenges */
 app.post('/webhook', (req, res) => {
   console.log(req.body);
   if (req.body.object === 'page') {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
-        if (event.message && event.message.text) {
+        if (now.setTimezone("Asia/Bangkok").toLocaleTimeString() === '10:35:00' ) {
           sendMessage(event);
         }
       });
@@ -34,7 +52,7 @@ const request = require('request');
 
 function sendMessage(event) {
   let sender = event.sender.id;
-  let text = "Hi, I'am a chatbot. Anything I can help you with?";
+  let text = "Hi, I'am a chatbot. It's time to close the aircon";
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
