@@ -39,7 +39,7 @@ app.post('/webhook', (req, res) => {
   if (req.body.object === 'page') {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
-        if (parseInt(now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,3)) === 10 ) {
+        //if (parseInt(now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,3)) === 10 ) {
           sendMessage(event);
         }
       });
