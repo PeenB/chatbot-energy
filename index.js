@@ -17,8 +17,7 @@ console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
 console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toTimeString());
 //console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toLocaleTimeString());
 
-
-
+// console.log( parseInt(now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,3)))
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
@@ -40,7 +39,7 @@ app.post('/webhook', (req, res) => {
   if (req.body.object === 'page') {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
-        if (now.setTimezone("Asia/Bangkok").toLocaleTimeString() === '10:35:00' ) {
+        if (parseInt(now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,3)) >= 10 ) {
           sendMessage(event);
         }
       });
