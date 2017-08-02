@@ -40,7 +40,7 @@ app.post('/webhook', (req, res) => {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message && event.message.text) {
-          sendMessage(event);
+          sendMessage(/*sender*/1591792705, /*text*/"Hi, I'am a chatbot. It's time to close the aircon");
         }
         if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '10' ) {
           if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '05'){
