@@ -1,22 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const apiaiApp = require('apiai')("EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD");
+const apiaiApp = require('apiai')("0e9ba2bec5f74949a3a2e28e0b879032");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //Time
-var time = require('time');
+//var time = require('time');
 // Create a new Date instance, representing the current instant in time
-var now = new time.Date();
+//var now = new time.Date();
 
 // now.setTimezone("Thailand/BKK");
 // `.getDate()`, `.getDay()`, `.getHours()`, etc.
 // will return values according to UTC-8
 // Default behavior:
-console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
+//console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
 
-console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toTimeString());
+//console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toTimeString());
 //console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toLocaleTimeString());
 
 // console.log( parseInt(now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,3)))
@@ -56,7 +56,7 @@ app.post('/webhook', (req, res) => {
 });
 const request = require('request');
 
-function sendMessage(event) {
+/*function sendMessage(event) {
   //still need to get specific id
   let sender = event.sender.id;
   let text = "Hi, I'am a chatbot. It's time to close the aircon";
@@ -76,4 +76,41 @@ function sendMessage(event) {
         console.log('Error: ', response.body.error);
     }
   });
+}*/
+function sendMessage(event) {
+  let sender = event.sender.id;
+  let text = event.message.text;
+
+  let apiai = apiaiApp.textRequest(text, {
+    sessionId: 'tabby_cat' // use any arbitrary id
+  });
+
+  apiai.on('response', (response) => {
+    // Got a response from api.ai. Let's POST to Facebook Messenger
+    apiai.on('response', (response) => {
+  let aiText = response.result.fulfillment.speech;
+
+    request({
+      url: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: {access_token: "EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD"},
+      method: 'POST',
+      json: {
+        recipient: {id: sender},
+        message: {text: aiText}
+      }
+    }, (error, response) => {
+      if (error) {
+          console.log('Error sending message: ', error);
+      } else if (response.body.error) {
+          console.log('Error: ', response.body.error);
+      }
+    });
+ });
+  });
+
+  apiai.on('error', (error) => {
+    console.log(error);
+  });
+
+  apiai.end();
 }
