@@ -42,7 +42,7 @@ app.post('/webhook', (req, res) => {
         if (event.message && event.message.text) {
           sendMessage(event);
         }
-        if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '11' ) {
+        if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '09' ) {
           if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '15'){
             sendMessage(event);
           }
@@ -55,7 +55,9 @@ app.post('/webhook', (req, res) => {
 const request = require('request');
 
 function sendMessage(event) {
-  let sender = event.sender.id;
+  //still need to get specific id
+  let sender = 1591792705;
+  console
   let text = "Hi, I'am a chatbot. It's time to close the aircon";
 
   request({
