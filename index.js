@@ -40,11 +40,11 @@ app.post('/webhook', (req, res) => {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message && event.message.text) {
-          sendMessage(/*sender*/1591792705, /*text*/"Hi, I'am a chatbot. It's time to close the aircon");
+          sendMessage(event);
         }
-        if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '10' ) {
-          if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '05'){
-            sendMessage(/*sender*/1591792705, /*text*/"Hi, I'am a chatbot. It's time to close the aircon");
+        if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '11' ) {
+          if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '15'){
+            sendMessage(event);
           }
         }
       });
@@ -54,9 +54,10 @@ app.post('/webhook', (req, res) => {
 });
 const request = require('request');
 
-/*function sendMessage(event) {
-  //still need to get specific id
-  let sender = 1591792705;
+function sendMessage(event) {
+  //still need to get specifi
+  let sender = event.sender.id;
+  console
   let text = "Hi, I'am a chatbot. It's time to close the aircon";
 
   request({
@@ -74,24 +75,4 @@ const request = require('request');
         console.log('Error: ', response.body.error);
     }
   });
-}*/
-function sendMessage(sender, text) {
- //let sender = 1591792705;
- //let text = "Hi, I'am a chatbot. It's time to close the aircon";
- let messageData = {text: text}
- request({
-  url: "https://graph.facebook.com/v2.10/me/messages",
-  qs : {access_token: token},
-  method: "POST",
-  json: {
-   recipient: {id: sender},
-   message : messageData,
-  }
- }, function(error, response, body) {
-  if (error) {
-   console.log("sending error")
-  } else if (response.body.error) {
-   console.log("response body error")
-  }
- })
 }
