@@ -44,7 +44,7 @@ app.post('/webhook', (req, res) => {
         }
         if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '09' ) {
           if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '15'){
-            sendMessage(event);
+            sendMessage(/*sender*/1591792705, /*text*/"Hi, I'am a chatbot. It's time to close the aircon");
           }
         }
       });
@@ -76,8 +76,8 @@ const request = require('request');
   });
 }*/
 function sendMessage(sender, text) {
- let sender = 1591792705;
- let text = "Hi, I'am a chatbot. It's time to close the aircon";
+ //let sender = 1591792705;
+ //let text = "Hi, I'am a chatbot. It's time to close the aircon";
  let messageData = {text: text}
  request({
   url: "https://graph.facebook.com/v2.10/me/messages",
