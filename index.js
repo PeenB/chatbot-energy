@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const apiaiApp = require('apiai')("331f8c7a7af34408b292843b4b8f046e");
+const apiaiApp = require('apiai')("EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,7 +56,7 @@ app.post('/webhook', (req, res) => {
 });
 const request = require('request');
 
-/*function sendMessage(event) {
+function sendMessage(event) {
   //still need to get specific id
   let sender = event.sender.id;
   let text = "Hi, I'am a chatbot. It's time to close the aircon";
@@ -76,41 +76,4 @@ const request = require('request');
         console.log('Error: ', response.body.error);
     }
   });
-}*/
-function sendMessage(event) {
-  let sender = event.sender.id;
-  let text = event.message.text;
-
-  let apiai = apiaiApp.textRequest(text, {
-    sessionId: 'tabby_cat' // use any arbitrary id
-  });
-
-  apiai.on('response', (response) => {
-    // Got a response from api.ai. Let's POST to Facebook Messenger
-    apiai.on('response', (response) => {
-  let aiText = response.result.fulfillment.speech;
-
-    request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: {access_token: "EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD"},
-      method: 'POST',
-      json: {
-        recipient: {id: sender},
-        message: {text: aiText}
-      }
-    }, (error, response) => {
-      if (error) {
-          console.log('Error sending message: ', error);
-      } else if (response.body.error) {
-          console.log('Error: ', response.body.error);
-      }
-    });
- });
-  });
-
-  apiai.on('error', (error) => {
-    console.log(error);
-  });
-
-  apiai.end();
 }
