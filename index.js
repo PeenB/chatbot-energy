@@ -2,18 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //Time
-//var time = require('time');
+var time = require('time');
 // Create a new Date instance, representing the current instant in time
-//var now = new time.Date();
+var now = new time.Date();
 
 // now.setTimezone("Thailand/BKK");
 // `.getDate()`, `.getDay()`, `.getHours()`, etc.
 // will return values according to UTC-8
 // Default behavior:
-//console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
+console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toDateString());
 
 console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toTimeString());
 //console.log( 'bkk ',now.setTimezone("Asia/Bangkok").toLocaleTimeString());
@@ -43,11 +44,11 @@ app.post('/webhook', (req, res) => {
         if (event.message && event.message.text) {
           sendMessage(event);
         }
-        //if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '11' ) {
-          //if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '15'){
-            //sendMessage(event);
-          //}
-        //}
+        if ((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(0,1)) === '11' ) {
+          if((now.setTimezone("Asia/Bangkok").toLocaleTimeString().substring(3,4)) === '15'){
+            sendMessage(event);
+          }
+        }
       });
     });
     res.status(200).end();
