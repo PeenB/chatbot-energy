@@ -54,10 +54,9 @@ app.post('/webhook', (req, res) => {
 });
 const request = require('request');
 
-function sendMessage(event) {
+/*function sendMessage(event) {
   //still need to get specific id
   let sender = 1591792705;
-  console
   let text = "Hi, I'am a chatbot. It's time to close the aircon";
 
   request({
@@ -75,4 +74,24 @@ function sendMessage(event) {
         console.log('Error: ', response.body.error);
     }
   });
+}*/
+function sendMessage(sender, text) {
+ let sender = 1591792705;
+ let text = "Hi, I'am a chatbot. It's time to close the aircon";
+ let messageData = {text: text}
+ request({
+  url: "https://graph.facebook.com/v2.10/me/messages",
+  qs : {access_token: token},
+  method: "POST",
+  json: {
+   recipient: {id: sender},
+   message : messageData,
+  }
+ }, function(error, response, body) {
+  if (error) {
+   console.log("sending error")
+  } else if (response.body.error) {
+   console.log("response body error")
+  }
+ })
 }
