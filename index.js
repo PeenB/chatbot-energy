@@ -27,12 +27,84 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // this is every 10 second of a minute
 var j = schedule.scheduleJob('10 * * * * *', function(){
-  sendTextMessage('100020773937674' , 'close aircondition')
-  console.log('The answer to life, the universe, and everything!');
+  getCommunityId(comunityid =>{
+  console.log("this is communityid", comunityid);
+  getMember(comunityid, members => {
+    console.log('communityiddddddddd', comunityid);
+    // console.log("all member", members);
+    console.log("# of members", members.length);
+    filterUser(members)
+  })
+})
+
+  console.log('17.00 ');
 });
 
 ///////////
+function getCommunityId(callback) {
+  request({
 
+    uri: 'https://graph.facebook.com/community/',
+    qs: { access_token: "DQVJ0Q0I0TDV4VTRQU3A4alhEOTVaUVFOTHJ2VzVQQXBOODJWYkdtUXdiWGU4YVlRTi1SelFhS3NfQjJuTXZAmaVN2alBpRk41TjkxaF9LQV9mRnBRc184dTJxN0dJaHNTR1FCSHFQUFBNQmNmTms0SnJZAZAXJzcVRFRlZAfTW53c0xhUVVISm5HdUtlaFpMalVGS1NocllRMHBHUU15Nm1ZAbnFNZAXRNYkptbW9Qbms3NVgxY0NBdjN5Q2I3eDZAESTJjdUxPeHl3" },
+    method: 'GET',
+  }, function (error, response, body) {
+
+    if (!error && response.statusCode == 200) {
+      console.log('Successfully get all member')
+      var id = JSON.parse(body);
+      console.log("community ID", id.id );
+      communityId = id.id
+
+      callback(communityId)
+    } else {
+      console.error("Unable to get community id");
+      console.error(response);
+      console.error(error);
+    }
+  });
+}
+
+function getMember(communityid, callback) {
+  console.log('getMember- communityid', communityid);
+  request({
+
+    uri: 'https://graph.facebook.com/'+communityid+'/members?limit=1000',
+    qs: { access_token: "DQVJ0Q0I0TDV4VTRQU3A4alhEOTVaUVFOTHJ2VzVQQXBOODJWYkdtUXdiWGU4YVlRTi1SelFhS3NfQjJuTXZAmaVN2alBpRk41TjkxaF9LQV9mRnBRc184dTJxN0dJaHNTR1FCSHFQUFBNQmNmTms0SnJZAZAXJzcVRFRlZAfTW53c0xhUVVISm5HdUtlaFpMalVGS1NocllRMHBHUU15Nm1ZAbnFNZAXRNYkptbW9Qbms3NVgxY0NBdjN5Q2I3eDZAESTJjdUxPeHl3" },
+    method: 'GET',
+  }, function (error, response, body) {
+
+    if (!error && response.statusCode == 200) {
+      console.log('Successfully get all member')
+      var json = JSON.parse(body);
+      console.log(json)
+      callback(json.data)
+    } else {
+      console.error("Unable to send message.");
+      console.error(response);
+      console.error(error);
+    }
+  });
+
+
+
+getCommunityId(comunityid =>{
+  console.log("this is communityid", comunityid);
+  getMember(comunityid, members => {
+    console.log('communityiddddddddd', comunityid);
+    // console.log("all member", members);
+    console.log("# of members", members.length);
+    
+    filterUser(members)
+  })
+})
+function filterUser(members) {
+  for (x=0; x< members.length ; x++){
+    console.log(members[x].id, members[x].name);
+
+    sendTextMessage(members[x].id , "hello " +members[x].name + "  turn off aircondition please")
+  }
+
+}
 
 
 
@@ -57,7 +129,7 @@ function sendTextMessage(recipientId, messageText) {
 
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: "EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD" },
+    qs: { access_token: "DQVJ0N2ktcHFTcm1CWnZAXOW1nSm1PUmk3UHk2LUlDX21CMzRVTjEwc3I5S2UzSVo2aW56MDF6SGdwSkozSHk5blphclU1MjZADeVd5cmpod1dqOFdaZAThLN1lpN09lOGYwSGgzazRhOXAxSWNuRzdTRXRSVVdmOEd5RnBuOXN1QjFaV21ZALXB0VENzcHZAQcTh3dzc4ZAjZA6ZA1FYbmZANUkZAqWUxaMUtXcjJoa2w4aHA4WENyby1WOVlYWERuX0dWc2owMFJnMXV3" },
     method: 'POST',
     json: messageData
 
@@ -149,7 +221,7 @@ function sendMessage(event) {
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: "EAAaEFbZBT8Q4BAEwstNB1gjujiEiOgYbMSHbWZAG6y3b7j3ZC7IbeFevFhl59I3o3GvZBr5wdsxWP9zMVSpjC5mIYROrPNFqPZByZAZA2JyEcERzbFUJPuo9omSsGStObJNA1RkXbsZAMVeaOQWoa8DtRQfrdWZAHnygYpWf2buTdgwZDZD"},
+    qs: {access_token: "DQVJ0N2ktcHFTcm1CWnZAXOW1nSm1PUmk3UHk2LUlDX21CMzRVTjEwc3I5S2UzSVo2aW56MDF6SGdwSkozSHk5blphclU1MjZADeVd5cmpod1dqOFdaZAThLN1lpN09lOGYwSGgzazRhOXAxSWNuRzdTRXRSVVdmOEd5RnBuOXN1QjFaV21ZALXB0VENzcHZAQcTh3dzc4ZAjZA6ZA1FYbmZANUkZAqWUxaMUtXcjJoa2w4aHA4WENyby1WOVlYWERuX0dWc2owMFJnMXV3"},
     method: 'POST',
     json: {
       recipient: {id: sender},
